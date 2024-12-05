@@ -1,0 +1,155 @@
+# this is where our python server code will be at
+import mysql.connector
+import csv
+import pandas as pd
+import plotly.express as ploter
+mydb = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="Login@mysql1"
+)
+
+my_control = mydb.cursor()
+
+# creating my database
+my_control.execute("CREATE DATABASE IF NOT EXISTS OstrichfillHighSchool")
+my_control.execute("USE OstrichfillHighSchool")
+# showing my database
+# my_control.execute("SHOW DATABASES")
+
+
+# creating admin_staff table
+my_control.execute("CREATE TABLE IF NOT EXISTS AdminStaff (staffID INT, name VARCHAR(225), staffEmail VARCHAR(225), staffdepartment VARCHAR(225), PRIMARY KEY (staffID))")
+
+my_control.execute("CREATE TABLE IF NOT EXISTS Student (studentID INT, name VARCHAR(225), studentEmail VARCHAR(225), studentDOB DATE, staffID INT, PRIMARY KEY (studentID), FOREIGN KEY (staffID) REFERENCES AdminStaff(staffID))")
+
+# creating table for courses
+my_control.execute("CREATE TABLE IF NOT EXISTS Courses (courseID INT, name VARCHAR(225), PRIMARY KEY (courseID))")
+
+# creating lecturer table
+my_control.execute("CREATE TABLE IF NOT EXISTS Lecturer (lecturerID INT, name VARCHAR(225), lecturerEmail VARCHAR(225), courseID INT, PRIMARY KEY (lecturerID), FOREIGN KEY (courseID) REFERENCES Courses(courseID))")
+
+# enrollment 
+my_control.execute("CREATE TABLE IF NOT EXISTS Enrollment (courseID INT, studentID INT, enrollmentDate DATE, PRIMARY KEY (courseID, studentID), FOREIGN KEY (courseID) REFERENCES Courses(courseID), FOREIGN KEY (studentID) REFERENCES Student(studentID))")
+
+# creating a phone_lecturer table to ensure the db is in 3NF and the multivalued attribute is dealt with.
+my_control.execute("CREATE TABLE IF NOT EXISTS Phone_Lecturer (phoneID INT AUTO_INCREMENT, lecturerID INT, phoneNumber VARCHAR(225), PRIMARY KEY (phoneID), FOREIGN KEY (lecturerID) REFERENCES Lecturer(lecturerID))")
+
+# making queries to store data into my tables
+def pop_data_into_table(db, csv_file, table):
+    with open(csv_file, "r") as file:
+        read = csv.reader(file)
+        next(read)
+
+        if table == "Student":
+            insertion_query = """
+INSERT INTO Student (studentID, name, studentEmail, studentDOB, staffID) VALUES (%s, %s, %s, %s, %s)
+"""
+        elif table == "Lecturer":
+            insertion_query = """
+INSERT INTO Lecturer (lecturerID, name, lecturerEmail, courseID) VALUES (%s, %s, %s, %s)
+"""
+        elif table == "AdminStaff":
+            insertion_query = """
+INSERT INTO AdminStaff (staffID, name, staffEmail, staffDepartment) VALUES (%s, %s, %s, %s)
+"""
+        elif table == "Courses":
+            insertion_query = """
+INSERT INTO Courses (courseID, name) VALUES (%s, %s)
+"""
+        elif table == "Enrollment":
+            insertion_query = """
+INSERT INTO Enrollment (courseID, studentID, enrollmentDate) VALUES (%s, %s, %s)
+"""
+        elif table == "Phone_Lecturer":
+            insertion_query = """
+INSERT INTO Phone_Lecturer (lecturerID, phoneNumber) VALUES (%s, %s)
+"""
+        else:
+            print("Table does not exist")
+
+        # perfom the insertion using the insertion query
+        for entity in read:
+            my_control.execute(insertion_query, entity)
+
+# writting Queries to extract and print to the user using the python plotly library
+def print_queries(query):
+    my_cursor = mydb.cursor()
+    
+    for my_query in query:
+        # unpacking
+        title, req_query, tablehead = my_query
+
+        my_cursor.execute(req_query)
+        query_res = my_cursor.fetchall()
+
+        # I am getting col names from the result
+        print()
+        print(query_res)#trying to print it first
+        
+        col, row = tablehead
+        col_names = [col, row]
+        # getting data into dataframe to make ploting easy
+        mydf = pd.DataFrame(query_res, columns=col_names)
+
+        # printing a bar chart using plotly library
+        chart = ploter.bar(mydf, x=col, y=row, title=title, labels={col:col, row:row})
+    
+        chart.show()
+        # break
+    my_cursor.close()
+    
+# pop_data_into_table(mydb, "adminStaff.csv", "AdminStaff")
+# pop_data_into_table(mydb, "student.csv", "Student")
+# pop_data_into_table(mydb, "courses.csv", "Courses")
+# pop_data_into_table(mydb, "lecture.csv", "Lecturer")
+# pop_data_into_table(mydb, "enrollment.csv", "Enrollment")
+# pop_data_into_table(mydb, "phonenumber.csv", "Phone_Lecturer")
+
+# making queries
+# printing all courses that  Rodney Hansen is enrolled in
+tablehead1 = ("courseID","name")
+title1 = "Courses that Rodney Hansen is enrolled in"
+query1 = """
+SELECT c.* FROM Courses c JOIN Enrollment e ON e.courseID = c.courseID JOIN Student s ON s.studentID = e.studentID WHERE s.name="Rodney Hansen"; 
+"""
+# printing all student that are enrolled in Cyber Security.
+tablehead2 = ("studentID","name")
+title2 = "Student that are enrolled in Cyber Security"
+query2 = """
+SELECT s.studentID, s.name FROM Student s JOIN Enrollment e ON e.studentID = s.studentID JOIN Courses c ON c.courseID = e.courseID WHERE c.name = "Cyber Security";
+"""
+# printing the course that Douglas Flores teaches
+tablehead3 = ("courseID","name")
+title3 = "Course that Douglas Flores teaches"
+query3 = """
+SELECT c.* FROM Courses c JOIN Lecturer l ON l.courseID = c.courseID WHERE l.name = "Douglas FLores";
+"""
+# Which staff is supposed to monitor Robin Ross
+tablehead4 = ("staffID","name")
+title4 = "Staff is supposed to monitor Robin Ross"
+query4 = """
+SELECT a.staffID, a.name FROM AdminStaff a JOIN Student s ON s.staffID = a.staffID WHERE s.name = "Robin Ross"; 
+"""
+# Get all the lectures that teaches Cyber Security
+tablehead5 = ("lecturerID","name")
+title5 = "Lectures that teaches Cyber Security"
+query5 = """
+SELECT l.lecturerID, l.name FROM Lecturer l JOIN Courses c ON c.courseID = l.courseID WHERE c.name = "Cyber Security";
+"""
+# making five queires
+# would have gone ahead to apply open close software priciple in my code, but 5 is okay for computation
+query_data = [(title1, query1, tablehead1), (title2, query2, tablehead2), (title3, query3, tablehead3),(title4, query4, tablehead4),(title5, query5, tablehead5)]
+
+print_queries(query_data)
+# commting changes to database
+mydb.commit()
+
+# printing out the databases
+for db in my_control:
+    print(db)
+# print(mydb)
+
+# this will be my main function
+def main():
+    pass
