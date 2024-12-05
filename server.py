@@ -99,12 +99,12 @@ def print_queries(query):
         # break
     my_cursor.close()
     
-# pop_data_into_table(mydb, "adminStaff.csv", "AdminStaff")
-# pop_data_into_table(mydb, "student.csv", "Student")
-# pop_data_into_table(mydb, "courses.csv", "Courses")
-# pop_data_into_table(mydb, "lecture.csv", "Lecturer")
-# pop_data_into_table(mydb, "enrollment.csv", "Enrollment")
-# pop_data_into_table(mydb, "phonenumber.csv", "Phone_Lecturer")
+pop_data_into_table(mydb, "adminStaff.csv", "AdminStaff")
+pop_data_into_table(mydb, "student.csv", "Student")
+pop_data_into_table(mydb, "courses.csv", "Courses")
+pop_data_into_table(mydb, "lecture.csv", "Lecturer")
+pop_data_into_table(mydb, "enrollment.csv", "Enrollment")
+pop_data_into_table(mydb, "phonenumber.csv", "Phone_Lecturer")
 
 # making queries
 # printing courses and the number of students that are enrolled in them
@@ -113,29 +113,29 @@ title1 = "All courses currently available at Ostrichfill and the number of stude
 query1 = """
 SELECT c.name, COUNT(e.studentID) AS  no_student FROM Enrollment e JOIN Courses c ON c.courseID = e.courseID GROUP BY c.name ORDER BY no_student;
 """
-# printing all admin staff and the number of students they monitor.
+# printing all Admin staff and the number of students they monitor.
 tablehead2 = ("name","no_student")
 title2 = "Admin staff and the number of students they monitor"
 query2 = """
-SELECT s.studentID, s.name FROM Student s JOIN Enrollment e ON e.studentID = s.studentID JOIN Courses c ON c.courseID = e.courseID WHERE c.name = "Cyber Security";
+SELECT a.name, COUNT(s.studentID) as no_student FROM AdminStaff a LEFT JOIN Student s ON s.staffID = a.staffID GROUP BY a.name ORDER BY no_student DESC;
 """
-# printing the course that Douglas Flores teaches
-tablehead3 = ("courseID","name")
-title3 = "Course that Douglas Flores teaches"
+# printing Student and the number of courses they are doing
+tablehead3 = ("name","no_courses")
+title3 = "Student and the number of courses they are doing"
 query3 = """
-SELECT c.* FROM Courses c JOIN Lecturer l ON l.courseID = c.courseID WHERE l.name = "Douglas FLores";
+SELECT s.name, COUNT(e.courseID) AS no_courses FROM Student s LEFT JOIN Enrollment e ON e.studentID = s.studentID GROUP BY s.name ORDER BY no_courses;
 """
-# Which staff is supposed to monitor Robin Ross
-tablehead4 = ("staffID","name")
-title4 = "Staff is supposed to monitor Robin Ross"
+# Printing Courses and the number of enlisted lecturers
+tablehead4 = ("name","no_lecturers")
+title4 = "Courses and the number of enlisted Lecturers"
 query4 = """
-SELECT a.staffID, a.name FROM AdminStaff a JOIN Student s ON s.staffID = a.staffID WHERE s.name = "Robin Ross"; 
+SELECT c.name, COUNT(l.lecturerID) AS no_lecturers FROM Courses c JOIN Lecturer l ON l.courseID = c.courseID GROUP BY c.name ORDER BY no_lecturers; 
 """
 # Get all the lectures that teaches Cyber Security
-tablehead5 = ("lecturerID","name")
+tablehead5 = ("name","lecturerID")
 title5 = "Lectures that teaches Cyber Security"
 query5 = """
-SELECT l.lecturerID, l.name FROM Lecturer l JOIN Courses c ON c.courseID = l.courseID WHERE c.name = "Cyber Security";
+SELECT l.name, l.lecturerID FROM Lecturer l JOIN Courses c ON c.courseID = l.courseID WHERE c.name = "Cyber Security";
 """
 # making five queires
 # would have gone ahead to apply open close software priciple in my code, but 5 is okay for computation
