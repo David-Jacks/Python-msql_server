@@ -1,22 +1,22 @@
 staffID,name,staffEmail,staffDepartment
-101,Kenneth Weaver,weaverchristine@example.com,Manufacturing systems engineer
-102,Crystal Kaiser,dperez@example.org,Interpreter
-103,Charles Nguyen,ronaldthomas@example.com,Television production assistant
-104,Cody Miller,sharon96@example.org,"Psychologist, prison and probation services"
-105,Virginia Garcia,kevinsanchez@example.com,Operations geologist
-106,Anthony Kramer,nicholas33@example.org,"Librarian, academic"
-107,Dustin Carter,gomeztiffany@example.org,"Therapist, music"
-108,Austin Flores,channa@example.org,"Scientist, forensic"
-109,Sarah Miller,heather69@example.org,"Designer, textile"
-110,Jason Hampton,abigaillopez@example.org,"Teacher, secondary school"
-111,Sharon Wood,mwalker@example.org,"Therapist, occupational"
-112,Kurt Murray,wendy12@example.com,"Therapist, music"
-113,Andrew Lewis,rushkatherine@example.net,Acupuncturist
-114,Mr. Robert Rodriguez,joshua98@example.org,"Engineer, manufacturing"
-115,Juan Glover,gschneider@example.com,Consulting civil engineer
-116,Matthew Perkins,christophercasey@example.com,"Investment banker, corporate"
-117,Miguel Tucker,justinfletcher@example.org,Chartered accountant
-118,Mark White,robertscott@example.com,"Teacher, special educational needs"
-119,Gail Odom,stacy88@example.net,Forensic scientist
-120,Lawrence Holden,michael74@example.net,Maintenance engineer
-121,Cody Johnson,ycole@example.org,"Engineer, civil (consulting)"
+101,Kenneth Weaver,weaverchristine@example.com,Mathematics
+102,Crystal Kaiser,dperez@example.org,Languages
+103,Charles Nguyen,ronaldthomas@example.com,Media Studies
+104,Cody Miller,sharon96@example.org,Counseling
+105,Virginia Garcia,kevinsanchez@example.com,Science
+106,Anthony Kramer,nicholas33@example.org,Library Services
+107,Dustin Carter,gomeztiffany@example.org,Music
+108,Austin Flores,channa@example.org,Science
+109,Sarah Miller,heather69@example.org,Design and Technology
+110,Jason Hampton,abigaillopez@example.org,Physical Education
+111,Sharon Wood,mwalker@example.org,Counseling
+112,Kurt Murray,wendy12@example.com,Music
+113,Andrew Lewis,rushkatherine@example.net,Health and Wellness
+114,Mr. Robert Rodriguez,joshua98@example.org,Engineering
+115,Juan Glover,gschneider@example.com,Mathematics
+116,Matthew Perkins,christophercasey@example.com,Administration
+117,Miguel Tucker,justinfletcher@example.org,Accounting
+118,Mark White,robertscott@example.com,Special Education
+119,Gail Odom,stacy88@example.net,Science
+120,Lawrence Holden,michael74@example.net,Maintenance
+121,Cody Johnson,ycole@example.org,Engineering

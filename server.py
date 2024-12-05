@@ -107,15 +107,15 @@ def print_queries(query):
 # pop_data_into_table(mydb, "phonenumber.csv", "Phone_Lecturer")
 
 # making queries
-# printing all courses that  Rodney Hansen is enrolled in
-tablehead1 = ("courseID","name")
-title1 = "Courses that Rodney Hansen is enrolled in"
+# printing courses and the number of students that are enrolled in them
+tablehead1 = ("name","no_student")
+title1 = "All courses currently available at Ostrichfill and the number of students enrolled"
 query1 = """
-SELECT c.* FROM Courses c JOIN Enrollment e ON e.courseID = c.courseID JOIN Student s ON s.studentID = e.studentID WHERE s.name="Rodney Hansen"; 
+SELECT c.name, COUNT(e.studentID) AS  no_student FROM Enrollment e JOIN Courses c ON c.courseID = e.courseID GROUP BY c.name ORDER BY no_student;
 """
-# printing all student that are enrolled in Cyber Security.
-tablehead2 = ("studentID","name")
-title2 = "Student that are enrolled in Cyber Security"
+# printing all admin staff and the number of students they monitor.
+tablehead2 = ("name","no_student")
+title2 = "Admin staff and the number of students they monitor"
 query2 = """
 SELECT s.studentID, s.name FROM Student s JOIN Enrollment e ON e.studentID = s.studentID JOIN Courses c ON c.courseID = e.courseID WHERE c.name = "Cyber Security";
 """
