@@ -99,12 +99,12 @@ def print_queries(query):
         # break
     my_cursor.close()
     
-pop_data_into_table(mydb, "adminStaff.csv", "AdminStaff")
-pop_data_into_table(mydb, "student.csv", "Student")
-pop_data_into_table(mydb, "courses.csv", "Courses")
-pop_data_into_table(mydb, "lecture.csv", "Lecturer")
-pop_data_into_table(mydb, "enrollment.csv", "Enrollment")
-pop_data_into_table(mydb, "phonenumber.csv", "Phone_Lecturer")
+# pop_data_into_table(mydb, "adminStaff.csv", "AdminStaff")
+# pop_data_into_table(mydb, "student.csv", "Student")
+# pop_data_into_table(mydb, "courses.csv", "Courses")
+# pop_data_into_table(mydb, "lecture.csv", "Lecturer")
+# pop_data_into_table(mydb, "enrollment.csv", "Enrollment")
+# pop_data_into_table(mydb, "phonenumber.csv", "Phone_Lecturer")
 
 # making queries
 # printing courses and the number of students that are enrolled in them
